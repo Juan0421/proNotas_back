@@ -4,8 +4,8 @@ const schema = new mongoose.Schema({
     nombre:{type:String, required:true},
     apellido:{type:String, required:true},
     doc_identidad:{type:String, required:true},
-    grado_pertenece:{type:Number ,required:true},
-    notas:[{type:Types.ObjectId, ref:'notas'}],
+    grado_pertenece:{type:Types.ObjectId, ref:'grados' ,required:true},
+    notas:{type:[Types.ObjectId], ref:'notas'},
     is_active:{type:Boolean, required:true},
     user_id:{type:Types.ObjectId, ref:'users', required:true}
 },{timestamps:true})

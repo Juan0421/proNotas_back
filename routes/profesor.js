@@ -9,7 +9,7 @@ import passport from 'passport';
 
 
 router.get('/', passport.authenticate('jwt', {session:false}), read )
-router.post('/create',passport.authenticate('jwt', {session:false}) ,create)
+router.post('/new',passport.authenticate('jwt', {session:false}) ,create)
 router.put('/:id',passport.authenticate('jwt', {session:false}), update )
 router.delete('/:id',passport.authenticate('jwt', {session:false}), deleteById)
 router.get('/:id',passport.authenticate('jwt', {session:false}), get_one)

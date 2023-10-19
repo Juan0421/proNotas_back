@@ -1,4 +1,4 @@
-import {Schema,model, Types} from "mongoose";
+import mongoose,  {Types} from "mongoose";
 
 let schema = new mongoose.Schema({
     num_grado:{type:Number, required:true},

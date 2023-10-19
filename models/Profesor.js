@@ -4,7 +4,7 @@ let schema = new mongoose.Schema({
     nombre:{type:String, required:true},
     apellido:{type:String, required:true},
     doc_identidad:{type:String, required:true},
-    materias:[{nombreMateria:{type: Types.ObjectId, ref:'materias', required:true}}],
+    materias:[{nombreMateria:{type: Types.ObjectId, ref:'materias'}}],
     user_id:{type:Types.ObjectId, ref:'users', required:true}
 },{
     timestamps:true

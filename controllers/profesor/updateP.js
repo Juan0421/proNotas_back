@@ -20,4 +20,4 @@ let updatePgrado = async(req, res, next)=>{
         })
     }
 }
-export default update
+export default updatePgrado

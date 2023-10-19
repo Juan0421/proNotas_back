@@ -2,7 +2,7 @@ import Estudiate from "../../models/Estudiante.js";
 
 let read = async(req, res, next)=>{
     try {
-        let all = await Estudiate.find()
+        let all = await Estudiate.find().populate('user_id grado_pertenece notas')
         if(all){
             return res.status(200).json({
                 status:200,

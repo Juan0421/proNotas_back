@@ -2,11 +2,11 @@ import Estudiante from '../../models/Estudiante.js'
 import User from '../../models/User.js'
 
 let create = async(req, res, next)=>{
-     req.body.user_id=req.user._id
      req.body.is_active=true
    try {
-        let estudiante = await Estudiante.create(req.body)
-        await User.findByIdAndUpdate(req.user._id, {role:2}, {new:true})
+    const user = await User.findOneAndUpdate({email:req.body.email_asignado}, {role:2}, {new:true})
+        req.body.user_id = user._id
+        let estudiante = (await Estudiante.create(req.body)).populate('grado_pertenece')
         return res.status(201).json({
             success:true,
             Response:estudiante

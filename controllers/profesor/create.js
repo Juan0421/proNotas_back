@@ -2,21 +2,22 @@ import Profesor from '../../models/Profesor.js'
 import User from '../../models/User.js'
 
 let create = async(req, res, next)=>{
-     req.body.user_id=req.user._id
      req.body.is_active=true
    try {
-        let Profesor = await Profesor.create(req.body)
-        await User.findByIdAndUpdate(req.user._id, {role:1}, {new:true})
+        const user = await User.findOneAndUpdate({email:req.body.email_asignado}, {role:1}, {new:true})
+        req.body.user_id = user._id
+        let profesor = await Profesor.create(req.body)
         return res.status(201).json({
             success:true,
-            Response:Profesor
+            Response:profesor
         })
     } catch (error) {
-        next(error)
+         console.log(error)
         return res.status(400).json({
             success:false,
             Response:"Bad request"
         })
+       
     }
 } 
 export default create
