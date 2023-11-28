@@ -11,7 +11,6 @@ let read = async(req, res, next)=>{
             })
         }
     } catch (error) {
-        next(error)
         return res.status(400).json({
             status:400,
             success:false,

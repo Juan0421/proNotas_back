@@ -2,12 +2,12 @@ import Profesor from "../../models/Profesor.js";
 
 const getAll = async(req, res)=>{
     try {
-        const one = await Profesor.find()
+        const one = await Profesor.find().populate({path:'user_id'})
         if(one.length ===0){
             return res.status(200).json({
                 status:200,
                 success:true,
-                Response: 'No se encontraron Profesores'
+                Response: []
             })
         }
         return res.status(200).json({

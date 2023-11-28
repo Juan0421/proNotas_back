@@ -1,65 +1,45 @@
 import Notas from "../../models/Notas.js";
 import Estudiante from "../../models/Estudiante.js";
-
+import Profesor from '../../models/Profesor.js'
 let create = async (req, res, next) => {
     try {
-        req.body.profesor_id = req.user._id;
+        const profesor = await Profesor.findOne({user_id:req.user.id})
+        req.body.profesor_id = profesor._id;
         const id_materia = req.params.m_id;
         req.body.materia_id = id_materia;
 
-        const notaExiste = await Notas.findOne({ materia_id: id_materia });
+        const notaExistente = await Notas.findOne({
+            estudiante_id: req.body.estudiante_id,
+            materia_id: id_materia,
+            periodo_id: req.body.periodo_id
+        });
 
-        if (notaExiste) {
-            // Agrega la nueva nota al array existente
-            notaExiste.nota.push(req.body.nota);
+        if (notaExistente) {
+            // Si la nota ya existe para el estudiante, la actualizas
+            notaExistente.nota.push(req.body.nota);
+            const notaActualizada = await notaExistente.save();
 
-            // Actualiza la nota en la base de datos
-            const notaActualizada = await notaExiste.save();
-
-            const estudiante = await Estudiante.findById(req.body.estudiante_id).populate('notas');
-
-            if (estudiante.notas.length !== 0) {
-                // Si el estudiante ya tiene notas, simplemente agrega la nueva nota al array
-                estudiante.notas.push(notaExiste._id);
-                await estudiante.save(); // Guarda el estudiante actualizado
-
-                if (notaActualizada) {
-                    return res.status(200).json({
-                        status: 200,
-                        success: true,
-                        Response: 'Nota actualizada',
-                        estudiante: estudiante
-                    });
-                }
-            } else {
-                // Si el estudiante no tiene notas aún, crea un nuevo array de notas
-                estudiante.notas = [notaExiste._id];
-                await estudiante.save(); // Guarda el estudiante actualizado
-
-                if (notaActualizada) {
-                    return res.status(200).json({
-                        status: 200,
-                        success: true,
-                        Response: 'Nota actualizada',
-                        estudiante: estudiante
-                    });
-                }
+            if (notaActualizada) {
+                return res.status(200).json({
+                    status: 200,
+                    success: true,
+                    Response: 'Nota actualizada'
+                });
             }
         } else {
-            // Si no existe una nota para la materia, crea una nueva
+            // Si no existe una nota para el estudiante, materia y periodo, crea una nueva nota
             const nuevaNota = await Notas.create({
                 estudiante_id: req.body.estudiante_id,
                 profesor_id: req.body.profesor_id,
                 materia_id: req.body.materia_id,
                 nota: [req.body.nota], // Inserta la nota como un array de un solo número
-                periodos: req.body.periodos
+                periodos: req.body.periodos,
+                periodo_id: req.body.periodo_id
             });
 
-            const estudianteConNotas = await Estudiante.findByIdAndUpdate(
-                req.body.estudiante_id,
-                { notas: [nuevaNota._id] }, // Crea un nuevo array de notas con la nueva nota
-                { new: true }
-            ).populate('notas');
+            const estudianteConNotas = await Estudiante.findById(req.body.estudiante_id)
+            estudianteConNotas.notas.push(nuevaNota._id)
+            estudianteConNotas.save()
 
             if (nuevaNota) {
                 return res.status(201).json({

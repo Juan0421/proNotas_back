@@ -1,9 +1,7 @@
 import mongoose,  {Types} from "mongoose";
 
 let schema = new mongoose.Schema({
-    num_grado:{type:Number, required:true},
-    director_curso:{type:Types.ObjectId, ref:'profesores', required:true},
-    materias:{type:Types.ObjectId, ref:'materias', required:true}
+    num_grado:{type:Number, required:true}
 },
 {timestamps:true})
 let collection = 'grados'

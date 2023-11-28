@@ -6,6 +6,7 @@ import router_materias from './materias.js'
 import router_profesores from './profesor.js'
 import router_notas from './notas.js'
 import router_grados from './grado.js'
+import router_periodos from './periodos.js'
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
@@ -17,5 +18,6 @@ router.use('/materias', router_materias)
 router.use('/profesores', router_profesores)
 router.use('/notas', router_notas)
 router.use('/grados', router_grados)
+router.use('/periodos', router_periodos)
 
 export default router

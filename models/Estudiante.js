@@ -11,6 +11,6 @@ const schema = new mongoose.Schema({
 },{timestamps:true})
 
 let collection = 'estudiantes'
-let Estudiate = mongoose.model(collection, schema)
+let Estudiante = mongoose.model(collection, schema)
 
-export default Estudiate
+export default Estudiante
